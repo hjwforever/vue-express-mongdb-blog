@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
+    <header class="title-heading">
       <h3>{{content}}</h3>
     </header>
   </div>
@@ -32,3 +32,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.title-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  user-select: none;
+  color: rgba(0,0,0,0.75);
+  text-shadow: 0.4rem 0.5rem 0.3rem rgba(0, 0, 0, 0.5);
+}
+</style>

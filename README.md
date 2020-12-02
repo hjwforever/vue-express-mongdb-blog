@@ -1,4 +1,4 @@
-# client
+# Front-End of Vue-Express-MongoDB-Blog by hjwforever
 
 ## Project setup
 ```

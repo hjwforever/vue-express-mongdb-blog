@@ -62,11 +62,6 @@ export default new Router({
             name: "posts-details",
             component: () => import("./components/Post")
         },
-        {
-            path: "/add",
-            name: "add",
-            component: () => import("./components/AddPost")
-        },
     ]
 })
 

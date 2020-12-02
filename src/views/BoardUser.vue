@@ -1,21 +1,20 @@
+
 <template>
-  <div class="container">
-    <header class="jumbotron">
+  <div class="flex">
+    <header class="title-heading">
       <h3>{{content}}</h3>
     </header>
     <PostsList></PostsList>
-    <AddPost></AddPost>
   </div>
 </template>
 
 <script>
 import UserService from '../services/user.service';
 import PostsList from "@/components/PostsList";
-import AddPost from "@/components/AddPost";
 
 export default {
   name: 'User',
-  components: { AddPost, PostsList},
+  components: { PostsList },
   data() {
     return {
       content: '',
@@ -36,3 +35,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.title-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  user-select: none;
+  color: rgba(0,0,0,0.75);
+  text-shadow: 0.4rem 0.5rem 0.3rem rgba(0, 0, 0, 0.5);
+}
+</style>

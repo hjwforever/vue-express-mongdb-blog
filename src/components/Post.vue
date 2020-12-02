@@ -1,62 +1,87 @@
 <template>
-  <div v-if="currentPost" class="edit-form">
-    <h4>Tutorial</h4>
-    <form>
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" id="title"
-               v-model="currentPost.title"
-        />
-      </div>
-      <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" class="form-control" id="author"
-               v-model="currentPost.author"
-        />
-      </div>
-      <div class="form-group">
-        <label for="content">Content</label>
-        <input type="text" class="form-control" id="content"
-               v-model="currentPost.content"
-        />
-      </div>
+  <v-dialog v-model="editPostDialog"  max-width="600px">
+    <template v-slot:activator="{ on, attrs }" >
+        <v-btn
+            tile
+            icon
+            color="primary"
+            v-bind="attrs"
+            v-on="on"
+        >
+          <v-icon small class="mr-2">
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+    </template>
 
-<!--      <div class="form-group">-->
-<!--        <label><strong>Status:</strong></label>-->
-<!--        {{ currentPost.published ? "Published" : "Pending" }}-->
-<!--      </div>-->
-    </form>
+    <v-card  v-if="currentPost" class="container mx-auto">
+      <v-card-title>编辑文章</v-card-title>
 
-<!--    <button class="badge badge-primary mr-2"-->
-<!--            v-if="currentPost.published"-->
-<!--            @click="updatePublished(false)"-->
-<!--    >-->
-<!--      UnPublish-->
-<!--    </button>-->
-<!--    <button v-else class="badge badge-primary mr-2"-->
-<!--            @click="updatePublished(true)"-->
-<!--    >-->
-<!--      Publish-->
-<!--    </button>-->
+        <v-form ref="form" lazy-validation>
+          <v-col
+              cols="12"
+              sm="6"
+              md="4"
+          >
+            <v-text-field
+                label="文章标题"
+                hint="文章标题"
+                v-model="currentPost.title"
+                :rules="[v => !!v || '标题不可为空']"
+                required
+            ></v-text-field>
 
-    <button class="badge badge-danger mr-2"
-            @click="deletePost"
-    >
-      Delete
-    </button>
+            <v-icon color="blue darken-2">mdi-account</v-icon>
+            <span>作者</span>
+            <v-spacer></v-spacer>
+            <v-chip pill>
+              <v-avatar left>
+                <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
+              </v-avatar>
+              {{ currentPost.author }}
+            </v-chip>
+          </v-col>
 
-    <button type="submit" class="badge badge-success"
-            @click="updatePost"
-    >
-      Update
-    </button>
-    <p>{{ message }}</p>
-  </div>
+          <v-col cols="12" sm="12" md="12">
+            <v-textarea
+                label="文章内容"
+                hint="文章内容"
+                v-model="currentPost.content"
+                multi
+                auto-grow
+                rows="3"
+                clearable
+                filled
+                clear-icon="mdi-close-circle"
+                :rules="[v => !!v || '文章内容不可为空']"
+                required
+            ></v-textarea>
+          </v-col>
 
-  <div v-else>
-    <br />
-    <p>请选中文章以显示详情...</p>
-  </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" small class="mr-2" @click="editPostDialog=false">
+              返回
+            </v-btn>
+
+            <v-btn color="error" small class="mr-2" @click="deletePost">
+              删除
+            </v-btn>
+
+            <v-btn color="success" small @click="updatePost">
+              更新
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+    </v-card>
+
+    <v-card v-else>
+      <br />
+      <v-card-text>请选中文章以显示详情...</v-card-text>
+    </v-card>
+  </v-dialog>
+
+
 </template>
 
 <script>
@@ -64,68 +89,67 @@ import PostDataService from "../services/PostDataService";
 
 export default {
   name: "post",
+  props:{
+    currentPost: null,
+  },
   data() {
     return {
-      currentPost: null,
-      message: ''
+      editPostDialog: false,
+      editPost:{
+        success: false,
+        msg: ''
+      },
+      // id: null,
     };
   },
   methods: {
-    getPost(id) {
-      PostDataService.get(id)
-          .then(response => {
-            this.currentPost = response.data;
-            console.log(response.data);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-    },
-
-    // updatePublished(status) {
-    //   var data = {
-    //     id: this.currentPost.id,
-    //     title: this.currentPost.title,
-    //     description: this.currentPost.description,
-    //     published: status
-    //   };
-    //
-    //   PostDataService.update(this.currentPost.id, data)
-    //       .then(response => {
-    //         this.currentPost.published = status;
-    //         console.log(response.data);
-    //       })
-    //       .catch(e => {
-    //         console.log(e);
-    //       });
-    // },
-
     updatePost() {
       PostDataService.update(this.currentPost.id, this.currentPost)
           .then(response => {
             console.log(response.data);
-            this.message = 'The post was updated successfully!';
+            this.editPost.success = true;
+            this.editPost.msg = '该文章已成功更新!';
           })
           .catch(e => {
             console.log(e);
+            this.editPost.success = false;
+            this.editPost.msg = e.toString();
+          })
+          .finally(() => {
+            this.$emit("editPost", this.editPost);
           });
+      this.editPostDialog=false
     },
 
     deletePost() {
       PostDataService.delete(this.currentPost.id)
           .then(response => {
             console.log(response.data);
-            this.$router.push({ name: "posts" });
+            this.editPost.success = true;
+            this.editPost.msg = '该文章已成功删除!';
           })
           .catch(e => {
             console.log(e);
+            this.editPost.success = false;
+            this.editPost.msg = e.toString();
+          })
+          .finally(() => {
+            this.$emit("editPost", this.editPost);
           });
+      this.editPostDialog=false
     }
   },
-  mounted() {
-    this.message = '';
-    this.getPost(this.$route.params.id);
-  }
+  //通过id从服务器获取相应文章
+  // getPost() {
+  //   PostDataService.get(this.id)
+  //       .then(response => {
+  //         this.currentPost = response.data;
+  //         console.log(response.data);
+  //       })
+  //       .catch(e => {
+  //         console.log(e);
+  //       });
+  // },
 };
 </script>
 

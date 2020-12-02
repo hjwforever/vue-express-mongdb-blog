@@ -1,71 +1,81 @@
 <template>
-  <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href class="navbar-brand" @click.prevent>
-      <img src="http://img.aruoxi.top/image/favcionx64.ico" v-text="HJW"></a>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" />Home
-          </router-link>
-        </li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/admin" class="nav-link">管理员面板</router-link>
-        </li>
-        <li v-if="showModeratorBoard" class="nav-item">
-          <router-link to="/mod" class="nav-link">版主面板</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">文章</router-link>
-        </li>
-      </div>
+  <v-app>
+      <v-app-bar app dark flat >
+        <v-app-bar-nav-icon @click.prevent class="mr-3">
+          <v-img src="http://img.aruoxi.top/image/favcionx64.ico" draggable="false"></v-img>
+        </v-app-bar-nav-icon>
+<!--        <v-icon href class="navbar-brand" @click.prevent>-->
+<!--          &lt;!&ndash;:src="require('./assets/logo.png')"&ndash;&gt;-->
+<!--          <v-img src="http://img.aruoxi.top/image/favcionx64.ico" draggable="false"></v-img></v-icon>-->
 
-      <div v-if="!currentUser" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link to="/register" class="nav-link">
+        <!-- 主页,不需要权限 -->
+        <v-btn to="/home" text style="text-decoration:none;">
+          <font-awesome-icon icon="home" />Home
+        </v-btn>
+
+        <!-- 需要有管理员权限才会显示 -->
+        <v-btn v-if="showAdminBoard" to="/admin" text style="text-decoration:none;">
+          管理员面板
+        </v-btn>
+
+        <!-- 只需要登陆后的用户权限 -->
+        <v-btn v-if="currentUser" to="/user" text style="text-decoration:none;">
+          文章管理
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <!-- 未登录则显示 注册 和 登录 按钮 -->
+        <div v-if="!currentUser">
+          <v-btn to="/register" text style="text-decoration:none;">
             <font-awesome-icon icon="user-plus" />Sign Up
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link">
+          </v-btn>
+          <v-btn  to="/login" text style="text-decoration:none;">
             <font-awesome-icon icon="sign-in-alt" />Login
-          </router-link>
-        </li>
-      </div>
+          </v-btn>
+        </div>
 
-      <div v-if="currentUser" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link to="/profile" class="nav-link">
+        <!-- 登录则显示 个人信息 和 登出 按钮 -->
+        <div v-else>
+          <v-btn  to="/profile" text style="text-decoration:none;">
             <font-awesome-icon icon="user" />
             {{ currentUser.username }}
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href @click.prevent="logOut">
+          </v-btn>
+          <v-btn  @click.prevent="logOut" text style="text-decoration:none;">
             <font-awesome-icon icon="sign-out-alt" />LogOut
-          </a>
-        </li>
-      </div>
-    </nav>
-
-    <div class="container">
-<!--      <keep-alive>-->
-<!--      <router-view v-show="$route.meta.keepAlive"/>-->
-<!--      </keep-alive>-->
-
+          </v-btn>
+        </div>
+      </v-app-bar>
+    <v-main>
       <router-view />
-<!--      <router-view  v-if="isRouterAlive"/>-->
-<!--      <Tabbar v-show="$route.meta.showFooter"></Tabbar>-->
-    </div>
-  </div>
+      <!--消息提示-->
+      <Message></Message>
+    </v-main>
+
+    <Footer></Footer>
+  </v-app>
 </template>
 
 <script>
+import Message from "@/components/Snackbar";
+import Footer from "@/components/Footer";
+
 export default {
   name: 'App',
+  components:{
+    Message,
+    Footer
+  },
   provide(){
     return{
-      reload:this.reload
+      currentUser:this.currentUser,
+      send (msg, color, timeout){
+        this.$store.dispatch('snackbar/openSnackbar',{
+          msg: msg,
+          color: color,
+          timeout: timeout || 2000
+        })
+      }
     }
   },
   data () {
@@ -109,8 +119,28 @@ export default {
   .navbar-brand img {
     margin: 0;
     padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     border-radius: 50%;
     border: 1px solid #333;
     text-decoration: none;
+  }
+
+  .title-heading {
+    text-align: center;
+    /*margin-bottom: 8rem;*/
+    color: rgba(0,0,0,0.75);
+    text-shadow: 0.4rem 0.5rem 0.3rem rgba(0, 0, 0, 0.5);
+  }
+  .container {
+    position: absolute;
+    top: 2rem;
+  }
+
+  .inline-button {
+  //display:inline-block;
+  //margin: 22px;
   }
 </style>
