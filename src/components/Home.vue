@@ -12,10 +12,10 @@
       </v-col>
 
       <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Hello,  {{ currentUser.username }} !<br />
-          Welcome to Vue-Express-MongoDB-Blog by HJW
-        </h1>
+        <h6 class="display-2 font-weight-bold mb-3">
+          Hello,  <span class="blue--text">{{ currentUser.username }}</span> !<br />
+          Welcome to <a href="https://github.com/hjwforever/vue-express-mongdb-blog" target="_blank">Vue-Express-MongoDB-Blog</a> by <span class="font-italic">HJW</span>
+        </h6>
       </v-col>
     </v-row>
   </div>

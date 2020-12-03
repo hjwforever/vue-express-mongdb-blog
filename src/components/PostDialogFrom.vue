@@ -1,5 +1,5 @@
 <template>
-  <v-col justify="center" class="mx-auto" cols="12" sm="4" md="4">
+  <div class="flex">
     <v-dialog
         v-model="dialog"
         persistent
@@ -76,24 +76,26 @@
             </v-form>
           </v-container>
         </v-card-text>
-        <v-card-actions>
-          <v-col cols="12" md="6" sm="12">
-            <v-chip
-                pill
-            >
-              <v-avatar left>
-                <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
-              </v-avatar>
-              {{ currentUser.username }}
-            </v-chip>
-          </v-col>
+        <v-card-actions class="flex">
+          <v-chip
+              pill
+          >
+            <v-avatar left>
+              <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
+            </v-avatar>
+            {{ currentUser.username }}
+          </v-chip>
+
           <v-spacer></v-spacer>
           <v-btn
+              right
               @click="reset"
           >
             取消
           </v-btn>
+
           <v-btn
+              right
               :disabled="!valid"
               color="success"
               @click="savePost"
@@ -103,7 +105,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -111,7 +113,6 @@ import PostDataService from "@/services/PostDataService";
 
 export default {
   name: "PostDialogFrom",
-  inject:['currentUser'],
   data: () => ({
       valid: true,
       dialog: false,
@@ -162,6 +163,11 @@ export default {
             this.$emit('addPost', this.addPost);
           });
       this.reset();
+    }
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
     }
   },
 

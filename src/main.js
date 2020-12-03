@@ -26,6 +26,11 @@ Vue.config.productionTip = false;
 Vue.use(VeeValidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
+//确认框
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
+
 // export var bus = new Vue();
 
 Vue.prototype.$message = message

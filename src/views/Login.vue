@@ -85,7 +85,7 @@ export default {
         if (this.user.username && this.user.password) {
           this.$store.dispatch('auth/login', this.user).then(
               () => {
-                this.$router.push('/profile');
+                this.$router.push('/user'); //转到用户模块(文章管理模块)
               },
               error => {
                 this.loading = false;

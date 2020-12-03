@@ -10,16 +10,18 @@
 
         <!-- 主页,不需要权限 -->
         <v-btn to="/home" text style="text-decoration:none;">
-          <font-awesome-icon icon="home" />Home
+          <v-icon>mdi-home</v-icon>
+          主页
         </v-btn>
 
         <!-- 需要有管理员权限才会显示 -->
-        <v-btn v-if="showAdminBoard" to="/admin" text style="text-decoration:none;">
-          管理员面板
-        </v-btn>
+<!--        <v-btn v-if="showAdminBoard" to="/admin" text style="text-decoration:none;">-->
+<!--          管理员面板-->
+<!--        </v-btn>-->
 
         <!-- 只需要登陆后的用户权限 -->
         <v-btn v-if="currentUser" to="/user" text style="text-decoration:none;">
+          <v-icon>mdi-file-cog-outline</v-icon>
           文章管理
         </v-btn>
 
@@ -28,30 +30,32 @@
         <!-- 未登录则显示 注册 和 登录 按钮 -->
         <div v-if="!currentUser">
           <v-btn to="/register" text style="text-decoration:none;">
-            <font-awesome-icon icon="user-plus" />Sign Up
+            <v-icon>mdi-account-plus-outline</v-icon>
+            注册
           </v-btn>
           <v-btn  to="/login" text style="text-decoration:none;">
-            <font-awesome-icon icon="sign-in-alt" />Login
+            <v-icon>mdi-login-variant</v-icon>
+            登录
           </v-btn>
         </div>
 
         <!-- 登录则显示 个人信息 和 登出 按钮 -->
         <div v-else>
           <v-btn  to="/profile" text style="text-decoration:none;">
-            <font-awesome-icon icon="user" />
+            <v-icon>mdi-account</v-icon>
             {{ currentUser.username }}
           </v-btn>
           <v-btn  @click.prevent="logOut" text style="text-decoration:none;">
-            <font-awesome-icon icon="sign-out-alt" />LogOut
+            <v-icon>mdi-logout-variant</v-icon>
+            登出
           </v-btn>
         </div>
       </v-app-bar>
     <v-main>
       <router-view />
-      <!--消息提示-->
+      <!--消息提示, 由Vuetify的snackbar自行封装而成的消息通知组件-->
       <Message></Message>
     </v-main>
-
     <Footer></Footer>
   </v-app>
 </template>

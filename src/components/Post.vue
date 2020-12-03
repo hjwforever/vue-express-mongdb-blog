@@ -17,7 +17,7 @@
     <v-card  v-if="currentPost" class="container mx-auto">
       <v-card-title>编辑文章</v-card-title>
 
-        <v-form ref="form" lazy-validation>
+        <v-form v-model="valid" ref="form" lazy-validation>
           <v-col
               cols="12"
               sm="6"
@@ -60,7 +60,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" small class="mr-2" @click="editPostDialog=false">
+            <v-btn color="primary" small class="mr-2" @click="cancel">
               返回
             </v-btn>
 
@@ -68,7 +68,7 @@
               删除
             </v-btn>
 
-            <v-btn color="success" small @click="updatePost">
+            <v-btn color="success" small :disabled="!valid" @click="updatePost">
               更新
             </v-btn>
           </v-card-actions>
@@ -91,36 +91,28 @@ export default {
   name: "post",
   props:{
     currentPost: null,
+    currentPost_copy: null,
+    index: Number
   },
   data() {
     return {
+      valid: false,
       editPostDialog: false,
       editPost:{
         success: false,
-        msg: ''
+        msg: '',
+        index: -1,
       },
-      // id: null,
     };
   },
   methods: {
-    updatePost() {
-      PostDataService.update(this.currentPost.id, this.currentPost)
-          .then(response => {
-            console.log(response.data);
-            this.editPost.success = true;
-            this.editPost.msg = '该文章已成功更新!';
-          })
-          .catch(e => {
-            console.log(e);
-            this.editPost.success = false;
-            this.editPost.msg = e.toString();
-          })
-          .finally(() => {
-            this.$emit("editPost", this.editPost);
-          });
-      this.editPostDialog=false
+    // 取消
+    cancel() {
+      this.editPostDialog=false;
+      // this.getPost();
+      this.currentPost= this.currentPost_copy;
     },
-
+    // 删除
     deletePost() {
       PostDataService.delete(this.currentPost.id)
           .then(response => {
@@ -134,22 +126,44 @@ export default {
             this.editPost.msg = e.toString();
           })
           .finally(() => {
+            this.editPost.index = -1;
             this.$emit("editPost", this.editPost);
           });
       this.editPostDialog=false
-    }
+    },
+    // 更新
+    updatePost() {
+      PostDataService.update(this.currentPost.id, this.currentPost)
+          .then(response => {
+            console.log(response.data);
+            this.editPost.index = this.index;
+            this.editPost.success = true;
+            this.editPost.msg = '该文章已成功更新!';
+          })
+          .catch(e => {
+            console.log(e);
+            this.editPost.index = -1;
+            this.editPost.success = false;
+            this.editPost.msg = e.toString();
+          })
+          .finally(() => {
+            this.$emit("editPost", this.editPost);
+          });
+      this.editPostDialog=false
+    },
+    // 通过id从服务器获取相应文章
+    getPost() {
+      PostDataService.get(this.currentPost.id)
+          .then(response => {
+            this.currentPost = response.data;
+            console.log(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    },
   },
-  //通过id从服务器获取相应文章
-  // getPost() {
-  //   PostDataService.get(this.id)
-  //       .then(response => {
-  //         this.currentPost = response.data;
-  //         console.log(response.data);
-  //       })
-  //       .catch(e => {
-  //         console.log(e);
-  //       });
-  // },
+
 };
 </script>
 
