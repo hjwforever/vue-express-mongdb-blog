@@ -119,7 +119,7 @@ export default {
         this.$swal.fire({
           title: '抱歉,你没有删除权限!',
           icon: 'error',
-          text: '或许你可以向管理员申请权限...',
+          html: '或许你可以向管理员申请权限...<br>(或者使用他的账号 用户名: hjw 密码: 123456)',
           confirmButtonText: '好吧',
         });
         this.currentPost= this.currentPost_copy;
@@ -162,7 +162,7 @@ export default {
         this.$swal.fire({
           title: '抱歉,你没有更新权限!',
           icon: 'error',
-          text: '或许你可以向管理员申请权限...',
+          html: '或许你可以向管理员申请权限...<br>(或者使用他的账号 用户名: hjw 密码: 123456)',
           confirmButtonText: '好吧',
         });
       }

@@ -20,7 +20,11 @@
           最后修改于 {{ post.updatedAt.substr(0,10) }}  {{ post.updatedAt.substr(11,8) }}
         </span>
       </v-card-subtitle>
-      <v-card-text v-for="(line, index) in post.content.split('\n\n')" :key="index">{{ line }}</v-card-text>
+    <v-col offset="1">
+      <v-card-text >
+        <v-row v-for="(line, index) in post.content.split('\n')" :key="index">{{ line }}</v-row></v-card-text>
+    </v-col>
+
 
   </v-card>
 </template>

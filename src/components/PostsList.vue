@@ -145,7 +145,7 @@ export default {
       ],
       page: 1,
       totalPages: 0,
-      pageSize: "all",
+      pageSize: 6,
       pageSizes: [3, 6, 9, "all"],
     };
   },
@@ -283,11 +283,12 @@ export default {
     //删除所有,只有管理员才有删除权限
     removeAllPosts() {
       if(!this.isAdmin){
+        this.retrievePosts();
         console.log('抱歉,你没有删除权限!');
         this.$swal.fire({
           title: '抱歉,你没有删除权限!',
           icon: 'error',
-          text: '或许你可以向管理员申请权限...',
+          html: '或许你可以向管理员申请权限...<br>(或者使用他的账号 用户名: hjw 密码: 123456)',
           confirmButtonText: '好吧',
         })
       }
@@ -319,11 +320,12 @@ export default {
     //删除选中文章,只有管理员才有删除权限
     deletePost(id) {
       if(!this.isAdmin){
+        this.retrievePosts();
         console.log('抱歉,你没有删除权限!');
         this.$swal.fire({
           title: '抱歉,你没有删除权限!',
           icon: 'error',
-          text: '或许你可以向管理员申请权限...',
+          html: '或许你可以向管理员申请权限...<br>(或者使用他的账号 用户名: hjw 密码: 123456)',
           confirmButtonText: '好吧',
         })
       }

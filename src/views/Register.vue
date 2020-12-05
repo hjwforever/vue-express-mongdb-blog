@@ -45,6 +45,14 @@
               <v-card-actions >
                 <v-spacer></v-spacer>
                 <v-btn
+                    color="primary"
+                    class="mr-4"
+                    to="/login"
+                    style="text-decoration: none"
+                >
+                  前往登录
+                </v-btn>
+                <v-btn
                     :disabled="!valid"
                     color="success"
                     class="mr-4"
@@ -54,7 +62,7 @@
                 </v-btn>
 
                 <v-btn
-                    color="primary"
+                    color="accent"
                     class="mr-4"
                     @click="reset"
                 >
@@ -112,17 +120,11 @@ export default {
       this.$validator.validate().then(isValid => {
         if (isValid) {
           this.$store.dispatch('auth/register', this.user).then(
-              data => {
-                this.message = data.message;
-                this.successful = true;
-                this.$send(this.user.username+'注册成功!','success');
+              () => {
+                this.$send(this.user.username+'注册成功! ','success');
+                this.$router.push('/user');
               },
               error => {
-                this.message =
-                    (error.response && error.response.data) ||
-                    error.message ||
-                    error.toString();
-                this.successful = false;
                 this.$send(this.user.username+'注册失败!'+
                     error.toString(),'error');
               }
