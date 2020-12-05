@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="editPostDialog"  max-width="600px">
+  <v-dialog v-model="editPostDialog"  max-width="600px" persistent>
     <template v-slot:activator="{ on, attrs }" >
         <v-btn
             tile
@@ -7,6 +7,7 @@
             color="primary"
             v-bind="attrs"
             v-on="on"
+            @click="$emit('editStart',index);"
         >
           <v-icon small class="mr-2">
             mdi-pencil
@@ -46,8 +47,8 @@
             <v-textarea
                 label="文章内容"
                 hint="文章内容"
-                v-model="currentPost.content"
                 multi
+                v-model="currentPost.content"
                 auto-grow
                 rows="3"
                 clearable
@@ -109,46 +110,80 @@ export default {
     // 取消
     cancel() {
       this.editPostDialog=false;
-      // this.getPost();
-      this.currentPost= this.currentPost_copy;
+      this.$emit('cancelEdit',this.index);
     },
     // 删除
     deletePost() {
-      PostDataService.delete(this.currentPost.id)
-          .then(response => {
-            console.log(response.data);
-            this.editPost.success = true;
-            this.editPost.msg = '该文章已成功删除!';
-          })
-          .catch(e => {
-            console.log(e);
-            this.editPost.success = false;
-            this.editPost.msg = e.toString();
-          })
-          .finally(() => {
-            this.editPost.index = -1;
-            this.$emit("editPost", this.editPost);
-          });
+      if(!this.isAdmin){
+        console.log('抱歉,你没有删除权限!');
+        this.$swal.fire({
+          title: '抱歉,你没有删除权限!',
+          icon: 'error',
+          text: '或许你可以向管理员申请权限...',
+          confirmButtonText: '好吧',
+        });
+        this.currentPost= this.currentPost_copy;
+      }
+      else {
+        this.$swal.fire({
+          title: '是否确认删除该文章?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: '确认删除',
+          cancelButtonText: '取消'
+        }).then((result) => {
+              if (result.isConfirmed) {
+                PostDataService.delete(this.currentPost.id)
+                    .then(response => {
+                      console.log(response.data);
+                      this.editPost.success = true;
+                      this.editPost.msg = '该文章已成功删除!';
+                    })
+                    .catch(e => {
+                      console.log(e);
+                      this.editPost.success = false;
+                      this.editPost.msg = e.toString();
+                    })
+                    .finally(() => {
+                      this.editPost.index = -1;
+                      this.$emit("editPost", this.editPost);
+                    })
+              }
+        })
+      }
       this.editPostDialog=false
     },
     // 更新
     updatePost() {
-      PostDataService.update(this.currentPost.id, this.currentPost)
-          .then(response => {
-            console.log(response.data);
-            this.editPost.index = this.index;
-            this.editPost.success = true;
-            this.editPost.msg = '该文章已成功更新!';
-          })
-          .catch(e => {
-            console.log(e);
-            this.editPost.index = -1;
-            this.editPost.success = false;
-            this.editPost.msg = e.toString();
-          })
-          .finally(() => {
-            this.$emit("editPost", this.editPost);
-          });
+      if(!this.isAdmin){
+        console.log('抱歉,你没有更新权限!');
+        this.currentPost = this.currentPost_copy;
+        this.$swal.fire({
+          title: '抱歉,你没有更新权限!',
+          icon: 'error',
+          text: '或许你可以向管理员申请权限...',
+          confirmButtonText: '好吧',
+        });
+      }
+      else {
+        PostDataService.update(this.currentPost.id, this.currentPost)
+            .then(response => {
+              console.log(response.data);
+              this.editPost.index = this.index;
+              this.editPost.success = true;
+              this.editPost.msg = '该文章已成功更新!';
+            })
+            .catch(e => {
+              console.log(e);
+              this.editPost.index = -1;
+              this.editPost.success = false;
+              this.editPost.msg = e.toString();
+            })
+            .finally(() => {
+              this.$emit("editPost", this.editPost);
+            });
+      }
       this.editPostDialog=false
     },
     // 通过id从服务器获取相应文章
@@ -156,6 +191,7 @@ export default {
       PostDataService.get(this.currentPost.id)
           .then(response => {
             this.currentPost = response.data;
+            //this.$parent.posts[this.currentPost.index].post = response.data;
             console.log(response.data);
           })
           .catch(e => {
@@ -163,7 +199,31 @@ export default {
           });
     },
   },
-
+  computed: {
+    // 获取当前用户信息
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    // 判断当前用户是否为管理员
+    isAdmin: function () {
+      for (let role of this.currentUser.roles) {
+        if (role==="ROLE_ADMIN"||role==="ROLE_MODERATOR"){
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+  // watch: {
+  //   postTitle(title) {
+  //     console.log(title);
+  //     if (this.editPostDialog){
+  //       this.$emit('editStart',this.editPost.index);
+  //     }else {
+  //       this.$emit('editEnd',this.editPost.index);
+  //     }
+  //   }
+  // }
 };
 </script>
 

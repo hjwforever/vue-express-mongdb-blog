@@ -73,13 +73,6 @@ export default {
   provide(){
     return{
       currentUser:this.currentUser,
-      send (msg, color, timeout){
-        this.$store.dispatch('snackbar/openSnackbar',{
-          msg: msg,
-          color: color,
-          timeout: timeout || 2000
-        })
-      }
     }
   },
   data () {

@@ -163,12 +163,12 @@ export default {
             this.$emit('addPost', this.addPost);
           });
       this.reset();
-    }
+    },
   },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
-    }
+    },
   },
 
 }

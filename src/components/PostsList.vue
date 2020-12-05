@@ -53,7 +53,7 @@
               </v-col>
               <!-- 按钮,删除所有文章 -->
               <v-col cols="12" sm="2" class="ml-5">
-                <v-btn class="mx-auto" tile dark color="error" @click="removeAllPosts" v-if=isAdmin()>
+                <v-btn class="mx-auto" tile dark color="error" @click="removeAllPosts">
                   <v-icon left>mdi-delete</v-icon>
                   删除所有
                 </v-btn>
@@ -92,6 +92,8 @@
               :hide-default-footer="true"
               :loading="loading"
               loading-text="获取所有文章中..."
+              @click:row="test"
+              @item-selected="test1"
           >
             <template v-slot:[`item.author`]="{ item }">
               <v-chip pill>
@@ -105,7 +107,7 @@
 <!--              <v-icon small class="mr-2" @click="editpost(item.id)">-->
 <!--                mdi-pencil-->
 <!--              </v-icon>-->
-              <Post :currentPost="item.post" :currentPost_copy="item.post" :index="item.index" @editPost="editPost"></Post>
+              <Post :index="item.index" :currentPost="item.post" :currentPost_copy="test" @cancelEdit="cancelEdit" @editPost="editPost"></Post>
               <v-icon small color="error" @click="deletePost(item.id)">
                 mdi-delete
               </v-icon>
@@ -124,7 +126,6 @@ import Post from "@/components/Post";
 
 export default {
   name: "posts-list",
-  inject:['currentUser','send'],
   components: { Post, PostDialogFrom },
   data() {
     return {
@@ -138,13 +139,12 @@ export default {
       currentIndex: -1,
       search: "",
       loading: true,
-      formTitle: "新文章",
-      form: {
-        id: null,
-        title: '',
-        content: '',
-        author: ''
-      },
+      // form: {
+      //   id: null,
+      //   title: '',
+      //   content: '',
+      //   author: ''
+      // },
       headers: [
         { text: "标题", align: "start", sortable: false, value: "title" },
         { text: "内容", value: "content", sortable: false },
@@ -158,6 +158,20 @@ export default {
     };
   },
   methods: {
+    test1(data,otherData) {
+      // alert('1');
+      console.log('test1');
+      console.log(data);
+      console.log(otherData);
+      // return this.posts[0].post;
+    },
+    test(data,otherData) {
+      // alert('1');
+      console.log('test');
+      console.log(data);
+      console.log(otherData);
+      // return this.posts[0].post;
+    },
     // 分页相关
     getRequestParams(search, page, pageSize) {
       let params = {};
@@ -198,7 +212,7 @@ export default {
         title: post.title.substr(0, 20) + "...",
         content: post.content.substr(0, 20) + "...",
         author: post.author,
-        post: post
+        post: post,
       };
     },
 
@@ -206,9 +220,9 @@ export default {
     addPost(addPost) {
       console.log(addPost.msg);
       if (addPost.success){
-        this.send(addPost.msg,'success');
+        this.$send(addPost.msg,'success');
       }
-      else this.send(addPost.msg,'error');
+      else this.$send(addPost.msg,'error');
       this.refreshList();
     },
 
@@ -217,9 +231,9 @@ export default {
       console.log(editPost.msg);
       // alert(editPost.id);
       if (editPost.success){
-        this.send(editPost.msg,'success');
+        this.$send(editPost.msg,'success');
       }
-      else  this.send(editPost.msg,'error');
+      else  this.$send(editPost.msg,'error');
 
       // 如果是更新文章, 则刷新表格中该文章内容
       if(editPost.index !== -1){
@@ -236,15 +250,9 @@ export default {
       this.posts[index].id = this.posts[index].post.author;
     },
 
-    //判断是否为管理员
-    isAdmin() {
-      let roles = JSON.parse(localStorage.getItem("user")).roles;
-      for (let role of roles) {
-        if (role==="ROLE_ADMIN"||role==="ROLE_MODERATOR"){
-          return true;
-        }
-      }
-      return false;
+    cancelEdit(index) {
+      console.log('cancelEdit',index);
+      this.retrievePosts();
     },
 
     //更据搜索框参数及分页数获取mongodb数据库中所有满足条件(标题或作者名符合)的文章
@@ -268,8 +276,7 @@ export default {
             }
             //关闭加载进度条
             this.loading = false;
-
-            this.send('成功刷新文章列表, 文章总数:'+response.data.totalItems, 'success', 1000);
+            this.$send('成功刷新文章列表, 文章总数:'+response.data.totalItems, 'success', 1000);
             console.log('成功查询, 文章总数:'+response.data.totalItems);
           })
           .catch(e => {
@@ -286,70 +293,97 @@ export default {
       console.log('成功刷新文章列表');
     },
 
-    setActivePost(post, index) {
-      this.currentPost = post;
-      this.currentIndex = index;
-    },
-
-    //删除所有,只有管理员权限才有这个按钮
+    //删除所有,只有管理员才有删除权限
     removeAllPosts() {
-      this.$swal.fire({
-        title: '是否确认删除所有文章',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: '确认删除',
-        cancelButtonText: '取消'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          PostDataService.deleteAll()
-              .then(response => {
-                console.log(response.data);
-                this.send('成功删除所有文章!','success');
-                this.refreshList();
-              })
-              .catch(e => {
-                console.log(e);
-                this.send(e.toString(),'error');
-              });
-        }
-      })
+      if(!this.isAdmin){
+        console.log('抱歉,你没有删除权限!');
+        this.$swal.fire({
+          title: '抱歉,你没有删除权限!',
+          icon: 'error',
+          text: '或许你可以向管理员申请权限...',
+          confirmButtonText: '好吧',
+        })
+      }
+      else {
+        this.$swal.fire({
+          title: '是否确认删除所有文章',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: '确认删除',
+          cancelButtonText: '取消'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            PostDataService.deleteAll()
+                .then(response => {
+                  console.log(response.data);
+                  this.$send('成功删除所有文章!', 'success');
+                  this.refreshList();
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.$send(e.toString(), 'error');
+                });
+          }
+        })
+      }
     },
 
-    //删除选中文章
+    //删除选中文章,只有管理员才有删除权限
     deletePost(id) {
-      this.$swal.fire({
-        title: '是否确认删除该文章?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        confirmButtonText: '确认删除',
-        cancelButtonText: '取消'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          PostDataService.delete(id)
-              .then(response => {
-                console.log(response.data);
-                // this.send(response.data.message,'success');
-                this.send('成功删除该文章!','success');
-                this.refreshList();
-              })
-              .catch(e => {
-                console.log(e);
-                this.send(e.toString(),'error');
-              });
-        }
-      })
+      if(!this.isAdmin){
+        console.log('抱歉,你没有删除权限!');
+        this.$swal.fire({
+          title: '抱歉,你没有删除权限!',
+          icon: 'error',
+          text: '或许你可以向管理员申请权限...',
+          confirmButtonText: '好吧',
+        })
+      }
+      else {
+        this.$swal.fire({
+          title: '是否确认删除该文章?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          confirmButtonText: '确认删除',
+          cancelButtonText: '取消'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            PostDataService.delete(id)
+                .then(response => {
+                  console.log(response.data);
+                  // this.$send(response.data.message,'success');
+                  this.$send('成功删除该文章!','success');
+                  this.refreshList();
+                })
+                .catch(e => {
+                  console.log(e);
+                  this.$send(e.toString(),'error');
+                });
+          }
+        })
+      }
     },
-
-    author() {
-      return  this.$store.state.auth.user.username;
-    }
   },
+  computed: {
+    // 获取当前用户信息
+    currentUser: function () {
+      return  this.$store.state.auth.user;
+    },
+    // 判断当前用户是否为管理员
+    isAdmin: function () {
+      for (let role of this.currentUser.roles) {
+        if (role==="ROLE_ADMIN"||role==="ROLE_MODERATOR"){
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+  // 默认第一次加载所有文章数据
   mounted() {
     this.retrievePosts();
-    this.isAdmin();
-    this.author();
   }
 };
 </script>

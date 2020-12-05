@@ -1,39 +1,53 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
+import router from '@/router/index';
 import store from './store';
+import VeeValidate from 'vee-validate';
+import InfiniteLoading from "vue-infinite-loading";
+import vuetify from './plugins/vuetify';
+// import message from "@/components/Snackbar"
+import VueSweetalert2 from 'vue-sweetalert2'
+
+// 引入样式
+import 'sweetalert2/dist/sweetalert2.min.css';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import VeeValidate from 'vee-validate';
-import { library } from '@fortawesome/fontawesome-svg-core';
+// import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// import {
+//   faHome,
+//   faUser,
+//   faUserPlus,
+//   faSignInAlt,
+//   faSignOutAlt
+// } from '@fortawesome/free-solid-svg-icons';
 
-import {
-  faHome,
-  faUser,
-  faUserPlus,
-  faSignInAlt,
-  faSignOutAlt
-} from '@fortawesome/free-solid-svg-icons';
-
-import vuetify from './plugins/vuetify';
-import message from "@/components/Snackbar"
-
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
 
 Vue.config.productionTip = false;
 
-Vue.use(VeeValidate);
+// 使用样式
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+// library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt);
+
+// 表单验证规则
+Vue.use(VeeValidate);
+
+// 动态无限加载(取决于数据库数据)
+Vue.use(InfiniteLoading, {
+  props: {
+    spinner: 'waveDots',
+    noResults: '查询结果为空',
+    // error: '出错啦！ <br> <button>Retry</button>'
+  }
+})
 
 //确认框
-import VueSweetalert2 from 'vue-sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css';
 Vue.use(VueSweetalert2);
 
-// export var bus = new Vue();
-
-Vue.prototype.$message = message
+// Vue.prototype.$message = message
+// 全局注册封装好的信息提示条的消息发送方法
+import Snackbar from '@/components/Snackbar'
+Vue.prototype.$send = Snackbar.send
 
 new Vue({
   router,

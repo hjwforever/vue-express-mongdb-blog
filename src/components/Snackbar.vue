@@ -35,12 +35,12 @@ export default {
       this.$store.commit("snackbar/CLOSE_SNACKBAR");
     },
   },
-  send (msg, color, timeout){
-    this.$store.dispatch('snackbar/openSnackbar',{
-      msg: msg,
-      color: color,
-      timeout: timeout || 2000
-    })
+    send(msg, color, timeout) {
+      this.$store.dispatch('snackbar/openSnackbar',{
+        msg: msg,
+        color: color,
+        timeout: timeout || 2000
+      })
   }
 };
 </script>
