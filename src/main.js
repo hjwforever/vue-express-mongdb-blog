@@ -8,6 +8,10 @@ import vuetify from './plugins/vuetify';
 // import message from "@/components/Snackbar"
 import VueSweetalert2 from 'vue-sweetalert2'
 
+// Infinite组件(页面滚动无限加载模块) 自定义全局样式
+import NoMore from "@/components/Infinite/NoMore";
+import NoResults from "@/components/Infinite/NoResults";
+import Error from "@/components/Infinite/Error";
 // 引入样式
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'bootstrap';
@@ -36,8 +40,11 @@ Vue.use(VeeValidate);
 Vue.use(InfiniteLoading, {
   props: {
     spinner: 'waveDots',
-    noResults: '查询结果为空',
-    // error: '出错啦！ <br> <button>Retry</button>'
+  },
+  slots: {
+    noMore: NoMore,
+    noResults: NoResults,
+    error: Error
   }
 })
 
