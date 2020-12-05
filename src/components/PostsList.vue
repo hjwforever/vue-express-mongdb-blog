@@ -92,8 +92,6 @@
               :hide-default-footer="true"
               :loading="loading"
               loading-text="获取所有文章中..."
-              @click:row="test"
-              @item-selected="test1"
           >
             <template v-slot:[`item.author`]="{ item }">
               <v-chip pill>
@@ -107,7 +105,7 @@
 <!--              <v-icon small class="mr-2" @click="editpost(item.id)">-->
 <!--                mdi-pencil-->
 <!--              </v-icon>-->
-              <Post :index="item.index" :currentPost="item.post" :currentPost_copy="test" @cancelEdit="cancelEdit" @editPost="editPost"></Post>
+              <Post :index="item.index" :currentPost="item.post" :currentPost_copy="item.post" @cancelEdit="cancelEdit" @editPost="editPost"></Post>
               <v-icon small color="error" @click="deletePost(item.id)">
                 mdi-delete
               </v-icon>
@@ -139,12 +137,6 @@ export default {
       currentIndex: -1,
       search: "",
       loading: true,
-      // form: {
-      //   id: null,
-      //   title: '',
-      //   content: '',
-      //   author: ''
-      // },
       headers: [
         { text: "标题", align: "start", sortable: false, value: "title" },
         { text: "内容", value: "content", sortable: false },
@@ -158,20 +150,6 @@ export default {
     };
   },
   methods: {
-    test1(data,otherData) {
-      // alert('1');
-      console.log('test1');
-      console.log(data);
-      console.log(otherData);
-      // return this.posts[0].post;
-    },
-    test(data,otherData) {
-      // alert('1');
-      console.log('test');
-      console.log(data);
-      console.log(otherData);
-      // return this.posts[0].post;
-    },
     // 分页相关
     getRequestParams(search, page, pageSize) {
       let params = {};
@@ -250,9 +228,18 @@ export default {
       this.posts[index].id = this.posts[index].post.author;
     },
 
+    // 取消编辑
     cancelEdit(index) {
-      console.log('cancelEdit',index);
-      this.retrievePosts();
+      console.log('取消编辑 文章序号:',index);
+      // 只刷新该文章, 重新从服务器获取数据
+      PostDataService.get(this.posts[index].id)
+          .then(response => {
+            this.posts[index].post = response.data;
+            console.log('刷新该文章成功');
+          })
+          .catch(e => {
+            console.log(e);
+          });
     },
 
     //更据搜索框参数及分页数获取mongodb数据库中所有满足条件(标题或作者名符合)的文章

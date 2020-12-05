@@ -39,15 +39,14 @@ export const snackbar = {
     // 逻辑处理,异步函数
     actions :{
         openSnackbar (context,options){
-            let timeout = context.state.timeout
+            // let timeout = context.state.timeout
             context.commit('OPEN_SNACKBAR',{
                 msg:options.msg,
                 color:options.color,
-                timeout:options.timeout
             })
             setTimeout(()=>{
                 context.commit('CLOSE_SNACKBAR')
-            },timeout)
+            },options.timeout || 2000)
         }
     }
 }

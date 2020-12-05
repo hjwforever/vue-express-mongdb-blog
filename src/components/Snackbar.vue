@@ -1,5 +1,8 @@
 <template>
   <v-snackbar top text v-model="visible" :color="color">
+    <v-icon dark :color="color">
+      {{ icon }}
+    </v-icon>
     {{ this.$store.state.snackbar.msg }}
     <!-- 关闭按钮 -->
     <template v-slot:action="{ attrs }" >
@@ -23,6 +26,19 @@ export default {
       set: function (){
       }
     },
+    icon:{
+      get: function (){
+        if (this.color === 'success'){
+          return 'mdi-check';
+        }else if(this.color === 'error'){
+          return 'mdi-alert';
+        }else {
+          return '';
+        }
+      },
+      set: function (){
+      }
+    },
     showClose() {
       return this.$store.state.snackbar.showClose;
     },
@@ -35,12 +51,12 @@ export default {
       this.$store.commit("snackbar/CLOSE_SNACKBAR");
     },
   },
-    send(msg, color, timeout) {
-      this.$store.dispatch('snackbar/openSnackbar',{
-        msg: msg,
-        color: color,
-        timeout: timeout || 2000
-      })
+  send(msg, color, timeout) {
+    this.$store.dispatch('snackbar/openSnackbar',{
+      msg: msg,
+      color: color,
+      timeout: timeout
+    })
   }
 };
 </script>
