@@ -28,6 +28,10 @@ class PostDataService {
     findByTitleOrAuthor(search) {
         return http.get(`/posts?title=${search}&author=${search}`);
     }
+
+    like(data) {
+        return http.put(`/post/like`,data);
+    }
 }
 
 export default new PostDataService();

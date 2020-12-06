@@ -1,38 +1,38 @@
 <template>
-  <v-row >
-    <v-col cols="4" offset="4" class="mt-5">
+  <v-row class="mx-auto">
+    <v-col cols="6" offset="3" >
       <v-card color="#f7f7f7">
-        <v-col cols="4" offset="4">
+        <v-col offset="3" offset-sm="5">
           <v-img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" max-width="96px" class="profile-img-card"></v-img>
         </v-col>
-        <v-row>
-          <v-col cols="8" offset="2">
-            <v-form
-                ref="form"
-                v-model="valid"
-            >
-              <v-text-field
-                  v-model="user.username"
-                  label="username"
-                  :rules="[v => !!v || '请输入用户名']"
-                  required
-              ></v-text-field>
+        <v-col cols="8" offset="1" offset-sm="2" >
+          <v-form
+              ref="form"
+              v-model="valid"
+          >
+            <v-text-field
+                v-model="user.username"
+                label="username"
+                :rules="[v => !!v || '请输入用户名']"
+                required
+            ></v-text-field>
 
 
-              <v-text-field
-                  v-model="user.password"
-                  label="password"
-                  type="password"
-                  :rules="[v => !!v || '请输入密码']"
-                  required
-              ></v-text-field>
+            <v-text-field
+                v-model="user.password"
+                label="password"
+                type="password"
+                :rules="[v => !!v || '请输入密码']"
+                required
+            ></v-text-field>
 
 
-              <v-card-actions >
-                <v-spacer></v-spacer>
+            <v-card-actions>
+              <div class="m-auto">
                 <v-btn
+                    small
+                    class="mr-4 mb-1"
                     color="primary"
-                    class="mr-4"
                     to="/register"
                     style="text-decoration: none"
                 >
@@ -40,24 +40,24 @@
                 </v-btn>
                 <v-btn
                     :disabled="!valid"
+                    class="mr-4 mb-1"
                     color="success"
-                    class="mr-4"
                     @click="handleLogin"
                 >
                   登录
                 </v-btn>
 
                 <v-btn
+                    small
                     color="accent"
-                    class="mr-4"
                     @click="reset"
                 >
                   清除
                 </v-btn>
-              </v-card-actions>
-            </v-form>
-          </v-col>
-        </v-row>
+              </div>
+            </v-card-actions>
+          </v-form>
+        </v-col>
       </v-card>
     </v-col>
   </v-row>

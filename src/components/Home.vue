@@ -2,13 +2,12 @@
   <div>
     <!--    <v-parallax :src="require('../assets/bg.jpg')" elevation="18"></v-parallax>-->
     <v-row class="text-center">
-      <v-col cols="12">
+      <v-col cols="2" offset="5">
         <v-img
             :src="require('../assets/logo.png')"
-            class="my-3"
             contain
-            height="160"
-        />
+            class="circle-img"
+        ></v-img>
       </v-col>
     </v-row>
 
@@ -66,7 +65,7 @@
                 <v-fade-transition leave-absolute>
                   <v-chip v-if="!open" pill dark color="#52c147" >
                     <v-avatar left>
-                      <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
+                      <v-img :src="authorUrl(post.author)"></v-img>
                     </v-avatar>
                     {{ post.author }}
                   </v-chip>
@@ -131,6 +130,9 @@ export default {
           }
         });
     },
+    authorUrl(author) {
+      return `http://img.aruoxi.top/image/${author}.jpg`;
+    }
   },
   computed: {
     currentUser() {
@@ -140,7 +142,15 @@ export default {
 
       }
       return user;
-    }
+    },
   },
 }
 </script>
+
+<style scoped>
+.circle-img {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+</style>

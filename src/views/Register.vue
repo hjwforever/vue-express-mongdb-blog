@@ -1,12 +1,12 @@
 <template>
-  <v-row >
-    <v-col cols="4" offset="4" class="mt-5">
+  <v-row class="mx-auto">
+    <v-col cols="6" offset="3">
       <v-card color="#f7f7f7">
-        <v-col cols="4" offset="4">
+        <v-col offset="3" offset-sm="5">
           <v-img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" max-width="96px" class="profile-img-card"></v-img>
         </v-col>
         <v-row>
-          <v-col cols="8" offset="2">
+          <v-col cols="8" offset="1" offset-sm="2">
             <v-form
                 ref="form"
                 v-model="valid"
@@ -43,31 +43,32 @@
               ></v-text-field>
 
               <v-card-actions >
-                <v-spacer></v-spacer>
+                <div class="m-auto">
                 <v-btn
+                    small
+                    class="mr-2 mb-2"
                     color="primary"
-                    class="mr-4"
                     to="/login"
                     style="text-decoration: none"
                 >
                   前往登录
                 </v-btn>
                 <v-btn
+                    class="mr-2"
                     :disabled="!valid"
                     color="success"
-                    class="mr-4"
                     @click="handleRegister"
                 >
                   注册
                 </v-btn>
 
                 <v-btn
+                    small
                     color="accent"
-                    class="mr-4"
                     @click="reset"
                 >
                   清除
-                </v-btn>
+                </v-btn></div>
               </v-card-actions>
             </v-form>
           </v-col>
