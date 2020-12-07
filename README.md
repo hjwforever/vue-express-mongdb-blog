@@ -122,7 +122,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   #### 发表新文章
   ![](http://img.aruoxi.top/vue-express-blog/image/%E6%B7%BB%E5%8A%A0%E6%96%B0%E6%96%87%E7%AB%A0.png)
   #### 编辑已有文章
-  ![](http://img.aruoxi.top/vue-express-blog/image/%E7%BC%96%E8%BE%91%E6%96%87%E7%AB%A0.pnghttp://img.aruoxi.top/vue-express-blog/image/%E6%B7%BB%E5%8A%A0%E6%96%B0%E6%96%87%E7%AB%A0.png)
+  ![](http://img.aruoxi.top/vue-express-blog/image/%E7%BC%96%E8%BE%91%E6%96%87%E7%AB%A0.png)
+  [编辑文章](http://img.aruoxi.top/vue-express-blog/image/editPost.png)
   #### 普通账户没有管理员权限进行 删除或更新文章
   ![](http://img.aruoxi.top/vue-express-blog/image/%E9%9D%9E%E7%AE%A1%E7%90%86%E5%91%98%E7%9A%84%E8%B4%A6%E6%88%B7%E6%B2%A1%E6%9C%89%E6%9D%83%E9%99%90%E5%88%A0%E9%99%A4%E6%96%87%E7%AB%A0.png)
   ![](http://img.aruoxi.top/vue-express-blog/image/%E9%9D%9E%E7%AE%A1%E7%90%86%E5%91%98%E7%9A%84%E8%B4%A6%E6%88%B7%E6%B2%A1%E6%9C%89%E6%9D%83%E9%99%90%E6%9B%B4%E6%96%B0%E6%96%87%E7%AB%A0.png)
