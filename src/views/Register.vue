@@ -1,5 +1,5 @@
 <template>
-  <v-row class="mx-auto">
+  <v-row class="mx-auto mt-15">
     <v-col cols="6" offset="3">
       <v-card color="#f7f7f7">
         <v-col offset="3" offset-sm="5">
