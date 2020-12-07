@@ -11,24 +11,30 @@
       </v-col>
     </v-row>
 
-    <v-row class="text-center">
-      <!-- 如果已登录 -->
-      <v-col v-if="currentUser">
-        <h6 class="display-1 font-weight-bold mb-3" style="user-select: none">
-          Hello,  <span class="blue--text">{{ currentUser.username }}</span> !<br />
-          Welcome to <a href="https://github.com/hjwforever/vue-express-mongdb-blog" target="_blank">Vue-Express-MongoDB-Blog</a> by <span class="font-italic">HJW</span>
-        </h6>
-      </v-col>
-      <!-- 如果未登录 -->
-      <v-col v-else class="m-4">
-        <h6 class="display-1 font-weight-bold" style="user-select: none">
-          Hello !<br>
-          Welcome to <a href="https://github.com/hjwforever/vue-express-mongdb-blog" target="_blank">Vue-Express-MongoDB-Blog</a> by <span class="font-italic">HJW</span><br><br>
-          (普通账号(可注册), 不具有删除及修改权限: <a href="#">test</a> 密码:<a href="#">123456</a>) <br>
-          (管理员账号(联系管理员注册), 具有删除及修改权限: <a href="#">hjw</a> 密码:<a href="#">123456</a>)
-        </h6>
-      </v-col>
-    </v-row>
+
+    <v-col cols="8" offset="2">
+      <v-card class="text-center" elevation="20">
+        <!-- 如果已登录 -->
+        <v-col v-if="currentUser">
+          <h6 class="display-1 font-weight-bold mb-3" style="user-select: none">
+            Hello,  <span class="blue--text">{{ currentUser.username }}</span> !<br />
+            Welcome to <a href="https://github.com/hjwforever/vue-express-mongdb-blog" target="_blank">Vue-Express-MongoDB-Blog</a> by <span class="font-italic">HJW</span>
+          </h6>
+        </v-col>
+        <!-- 如果未登录 -->
+        <v-col v-else class="m-4">
+          <h6 class="display-1 font-weight-bold" style="user-select: none">
+            Hello !<br>
+            Welcome to <a href="https://github.com/hjwforever/vue-express-mongdb-blog" target="_blank">Vue-Express-MongoDB-Blog</a> by <span class="font-italic">HJW</span><br><br>
+            ①普通账号(可注册), 不具有删除及修改权限:<br>
+            <v-chip x-large text-color="blue" label> 用户名: test  密码:123456</v-chip> <br>
+            ②管理员账号(联系管理员注册), 具有删除及修改权限:<br>
+            <v-chip x-large text-color="blue" label> 用户名: hjw   密码:123456</v-chip>
+          </h6>
+        </v-col>
+      </v-card>
+    </v-col>
+
 
     <!-- 拓展列表, 可无限加载服务器中的文章数据, 点击展开查看细节 -->
     <v-col cols="10" offset="1">
