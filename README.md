@@ -26,6 +26,8 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## 项目结构
+思维导图下载链接：
+[前端项目结构思维导图](https://devcloud.cn-north-4.huaweicloud.com/codehub/v1/devcloud/682618/repository/blobs/fc578af7949921d8fa84d5a2815f7f15c7be8716/downloadFile?filepath=tree.xmind)
 ```
 ├─.gitignore 
 ├─babel.config.js 
