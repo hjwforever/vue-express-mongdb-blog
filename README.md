@@ -52,20 +52,20 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 思维导图下载链接：
 [前端项目结构思维导图](https://devcloud.cn-north-4.huaweicloud.com/codehub/v1/devcloud/682618/repository/blobs/fc578af7949921d8fa84d5a2815f7f15c7be8716/downloadFile?filepath=tree.xmind)
 ```
-├─.gitignore 
-├─babel.config.js 
+├─.gitignore
+├─babel.config.js
 ├─build --------------------- // build后的文件导出目录
-├─package-lock.json 
-├─package.json 
-├─public 
-│ ├─favicon.ico 
-│ └─index.html 
-├─README.md 
-├─src 
-│ ├─App.vue 
-│ ├─assets 
-│ │ ├─bg.jpg 
-│ │ └─logo.png 
+├─package-lock.json
+├─package.json
+├─public
+│ ├─favicon.ico
+│ └─index.html
+├─README.md
+├─src
+│ ├─App.vue
+│ ├─assets
+│ │ ├─bg.jpg
+│ │ └─logo.png
 │ ├─components -------------- // Vue组件
 │ │ ├─Footer.vue ------------ // 页脚组件
 │ │ ├─Home.vue -------------- // 主页
@@ -85,7 +85,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 │ ├─plugins ----------------- // 插件
 │ │ └─vuetify.js ------------ // vuetify(本醒目使用的UI框架)
 │ ├─router ------------------ // 路由文件, 包括重定向等
-│ │ └─index.js 
+│ │ └─index.js
 │ ├─services ---------------- // 服务模块， 用于登录验证（包括有效期为24小时的accessToken）、请求文章的方法等
 │ │ ├─auth-header.js -------- // 定义登录、注册及登出的axios请求方法
 │ │ ├─auth.service.js ------- // 设置登录注册请求头
