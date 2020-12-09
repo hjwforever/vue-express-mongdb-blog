@@ -37,7 +37,7 @@ Vue.use(InfiniteLoading, {
 // 确认框
 Vue.use(VueSweetalert2);
 
-// 全局注册封装好的信息提示条的消息发送方法
+// 全局注册封装好的vuetify信息提示条的消息发送方法
 import Snackbar from '@/components/Snackbar'
 Vue.prototype.$send = Snackbar.send
 
