@@ -24,6 +24,7 @@
                 type="password"
                 :rules="[v => !!v || '请输入密码']"
                 required
+                @keydown.enter="handleLogin"
             ></v-text-field>
 
 
