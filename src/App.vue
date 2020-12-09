@@ -51,10 +51,10 @@
           </v-btn>
         </div>
       </v-app-bar>
+    <Message></Message>
     <v-main>
       <router-view />
       <!--消息提示, 由Vuetify的snackbar自行封装而成的消息通知组件-->
-      <Message></Message>
     </v-main>
     <Footer></Footer>
   </v-app>

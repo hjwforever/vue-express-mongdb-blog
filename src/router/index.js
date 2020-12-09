@@ -1,6 +1,5 @@
 import Vue from "vue"
 import Router from "vue-router"
-// import { router } from './router';
 import Home from '@/components/Home.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
@@ -67,14 +66,13 @@ const router = new Router({
     routes
 });
 
-// 重定向,未登录会跳转至登录界面
+// 全局路由守卫
 router.beforeEach((to, from, next) => {
     const publicPages = ['/login', '/register', '/home'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('user');
 
-    // trying to access a restricted page + not logged in
-    // redirect to login page
+    // 未登录则重定向至登录页
     if (authRequired && !loggedIn) {
         next('/login');
     } else {
