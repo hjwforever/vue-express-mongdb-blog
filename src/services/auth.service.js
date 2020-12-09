@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/';
-// const API_URL = 'http://domain/api/auth/';
+// const API_URL = 'http://localhost:8080/api/auth/';
+const API_URL = 'http://www.blog.aruoxi.top/api/auth/';
 
 class AuthService {
     login(user) {
