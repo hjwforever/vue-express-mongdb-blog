@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// const API_URL = 'http://localhost:8080/api/auth/';   // 提交作业中的server后端整合的是这个, 即前端访问本地服务器接口
-const API_URL = 'https://blog-apis.aruoxi.top/api/auth/'; // 只运行client前端会访问 已部署于阿里云服务器的后端api接口
+const API_URL = process.env.VUE_APP_BASEAPI + "/auth/";
+// const API_URL = 'http://localhost:8080/api/auth/';
+// const API_URL = 'http://domain/api/auth/';
 
 class AuthService {
     login(user) {
