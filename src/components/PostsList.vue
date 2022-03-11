@@ -26,94 +26,93 @@
       </v-row>
 
       <!--  文章列表  -->
-      <v-col cols="12" sm="12">
-        <v-card class="mx-auto" tile elevation="18">
-          <template v-slot:expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-              More info about {{ item.title }}
-            </td>
-          </template>
+      <v-card class="mx-auto" tile elevation="18">
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            More info about {{ item.title }}
+          </td>
+        </template>
 
-          <!-- 标题及功能按钮(添加新文章, 刷新列表, 删除所有(需要管理员权限才显示)) -->
-          <v-card-title class="list">
-            <v-row>
-              <v-col cols="12" sm="4" class="ml-1">
-                <h2>文章列表</h2>
-              </v-col>
-              <!-- 按钮,添加新文章 -->
-              <v-col cols="12" sm="2" class="ml-0 mr-0">
-                <PostDialogFrom @addPost="addPost"></PostDialogFrom>
-              </v-col>
-              <!-- 按钮,刷新文章列表 -->
-              <v-col cols="12" sm="2" class="ml-5">
-                <v-btn tile dark color="green" @click="refreshList()">
-                  <v-icon left>mdi-cached</v-icon>
-                  刷新列表
-                </v-btn>
-              </v-col>
-              <!-- 按钮,删除所有文章 -->
-              <v-col cols="12" sm="2" class="ml-5">
-                <v-btn class="mx-auto" tile dark color="error" @click="removeAllPosts">
-                  <v-icon left>mdi-delete</v-icon>
-                  删除所有
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-title>
-
-          <!-- 分页选择按钮 -->
-          <v-row class="mx-auto">
-            <v-col cols="4" sm="3">
-              <v-select
-                  v-model="pageSize"
-                  :items="pageSizes"
-                  label="每页文章数"
-                  @change="handlePageSizeChange"
-              ></v-select>
+        <!-- 标题及功能按钮(添加新文章, 刷新列表, 删除所有(需要管理员权限才显示)) -->
+        <v-card-title class="list">
+          <v-row>
+            <v-col cols="12" sm="4" class="ml-1">
+              <h2>文章列表</h2>
             </v-col>
-
-            <!-- 分页(页数选择) -->
-            <v-col cols="12" sm="9">
-              <v-pagination
-                  v-model="page"
-                  :length="totalPages"
-                  circle
-                  total-visible="7"
-                  next-icon="mdi-menu-right"
-                  prev-icon="mdi-menu-left"
-                  @input="handlePageChange"
-              ></v-pagination>
+            <!-- 按钮,添加新文章 -->
+            <v-col cols="12" sm="2" class="ml-0 mr-0">
+              <PostDialogFrom @addPost="addPost"></PostDialogFrom>
+            </v-col>
+            <!-- 按钮,刷新文章列表 -->
+            <v-col cols="12" sm="2" class="ml-5">
+              <v-btn tile dark color="green" @click="refreshList()">
+                <v-icon left>mdi-cached</v-icon>
+                刷新列表
+              </v-btn>
+            </v-col>
+            <!-- 按钮,删除所有文章 -->
+            <v-col cols="12" sm="2" class="ml-5">
+              <v-btn class="mx-auto" tile dark color="error" @click="removeAllPosts">
+                <v-icon left>mdi-delete</v-icon>
+                删除所有
+              </v-btn>
             </v-col>
           </v-row>
-          <v-data-table
-              :headers="headers"
-              :items="posts"
-              disable-pagination
-              :hide-default-footer="true"
-              :loading="loading"
-              loading-text="获取所有文章中..."
-          >
-            <template v-slot:[`item.author`]="{ item }">
-              <v-chip pill>
-                <v-avatar left>
-                  <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
-                </v-avatar>
-                {{ item.author }}
-              </v-chip>
-            </template>
-            <template v-slot:[`item.actions`]="{ item }">
+        </v-card-title>
+
+        <!-- 分页选择按钮 -->
+        <v-row class="mx-auto">
+          <v-col cols="4" sm="3">
+            <v-select
+                v-model="pageSize"
+                :items="pageSizes"
+                label="每页文章数"
+                @change="handlePageSizeChange"
+            ></v-select>
+          </v-col>
+
+          <!-- 分页(页数选择) -->
+          <v-col cols="12" sm="9">
+            <v-pagination
+                v-model="page"
+                :length="totalPages"
+                circle
+                total-visible="7"
+                next-icon="mdi-menu-right"
+                prev-icon="mdi-menu-left"
+                @input="handlePageChange"
+            ></v-pagination>
+          </v-col>
+        </v-row>
+        <v-data-table
+            :headers="headers"
+            :items="posts"
+            disable-pagination
+            :hide-default-footer="true"
+            :loading="loading"
+            loading-text="获取所有文章中..."
+        >
+          <template v-slot:[`item.author`]="{ item }">
+            <v-chip pill>
+              <v-avatar left>
+                <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
+              </v-avatar>
+              {{ item.author }}
+            </v-chip>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
 <!--              <v-icon small class="mr-2" @click="editpost(item.id)">-->
 <!--                mdi-pencil-->
 <!--              </v-icon>-->
-              <Post :index="item.index" :currentPost="item.post" :currentPost_copy="item.post" @cancelEdit="cancelEdit" @editPost="editPost"></Post>
-              <v-icon small color="error" @click="deletePost(item.id)">
-                mdi-delete
-              </v-icon>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
+            <Post :index="item.index" :currentPost="item.post" :currentPost_copy="item.post" @cancelEdit="cancelEdit" @editPost="editPost"></Post>
+            <v-icon small color="error" @click="deletePost(item.id)">
+              mdi-delete
+            </v-icon>
+          </template>
+        </v-data-table>
+      </v-card>
     </v-row>
+    <v-spacer></v-spacer>
   </v-app>
 </template>
 
