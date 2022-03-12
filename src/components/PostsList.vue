@@ -40,7 +40,7 @@
               <h2>文章列表</h2>
             </v-col>
             <!-- 按钮,添加新文章 -->
-            <v-col cols="12" sm="2" class="ml-0 mr-0">
+            <v-col cols="12" sm="2" class="mr-5">
               <PostDialogFrom @addPost="addPost"></PostDialogFrom>
             </v-col>
             <!-- 按钮,刷新文章列表 -->

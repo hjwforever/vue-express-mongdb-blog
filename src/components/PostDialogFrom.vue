@@ -6,11 +6,6 @@
         max-width="600px"
     >
       <template v-slot:activator="{ on, attrs }" >
-        <v-row
-            align="center"
-            justify="space-around"
-
-        >
           <v-btn
               tile
               color="primary"
@@ -22,7 +17,6 @@
             </v-icon>
             添加新文章
           </v-btn>
-        </v-row>
       </template>
       <v-card>
         <v-card-title>
