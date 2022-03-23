@@ -81,7 +81,7 @@
               pill
           >
             <v-avatar left>
-              <v-img src="http://img.aruoxi.top/image/favcionx32.ico"></v-img>
+              <v-img src="http://cdn.aruoxi.com/vue-express-blog/favcionx32.ico"></v-img>
             </v-avatar>
             {{ currentUser.username }}
           </v-chip>

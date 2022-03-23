@@ -120,7 +120,7 @@ export default {
       return  this.$store.state.auth.user;
     },
     authorUrl: function () {
-      return `http://img.aruoxi.top/image/${this.post.author}.jpg`;
+      return `http://cdn.aruoxi.com/vue-express-blog/${this.post.author}.jpg`;
     }
   },
 }

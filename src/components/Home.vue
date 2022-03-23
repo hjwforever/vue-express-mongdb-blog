@@ -137,7 +137,7 @@ export default {
         });
     },
     authorUrl(author) {
-      return `http://img.aruoxi.top/image/${author}.jpg`;
+      return `http://cdn.aruoxi.com/vue-express-blog/${author}.jpg`;
     }
   },
   computed: {
