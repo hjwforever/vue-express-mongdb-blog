@@ -2,11 +2,11 @@
   <v-app>
       <v-app-bar app dark flat >
         <v-app-bar-nav-icon @click.prevent class="mr-3">
-          <v-img src="http://cdn.aruoxi.com/vue-express-blog/favcionx64.ico" draggable="false"></v-img>
+          <v-img src="https://cdn.aruoxi.com/vue-express-blog/favcionx64.ico" draggable="false"></v-img>
         </v-app-bar-nav-icon>
 <!--        <v-icon href class="navbar-brand" @click.prevent>-->
 <!--          &lt;!&ndash;:src="require('./assets/logo.png')"&ndash;&gt;-->
-<!--          <v-img src="http://cdn.aruoxi.com/vue-express-blog/favcionx64.ico" draggable="false"></v-img></v-icon>-->
+<!--          <v-img src="https://cdn.aruoxi.com/vue-express-blog/favcionx64.ico" draggable="false"></v-img></v-icon>-->
 
         <!-- 主页,不需要权限 -->
         <v-btn to="/home" text style="text-decoration:none;">

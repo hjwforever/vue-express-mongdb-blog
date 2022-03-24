@@ -37,7 +37,7 @@
             <v-spacer></v-spacer>
             <v-chip pill>
               <v-avatar left>
-                <v-img src="http://cdn.aruoxi.com/vue-express-blog/favcionx32.ico"></v-img>
+                <v-img src="https://cdn.aruoxi.com/vue-express-blog/favcionx32.ico"></v-img>
               </v-avatar>
               {{ currentPost.author }}
             </v-chip>
